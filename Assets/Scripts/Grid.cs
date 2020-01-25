@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour {
 
+    public bool onlyDisplayPathGizmos;
     public LayerMask unwakableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
@@ -16,9 +17,11 @@ public class Grid : MonoBehaviour {
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt (gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt (gridWorldSize.y / nodeDiameter);
-
         CreateGrid ();
+    }
 
+    public int MaxSize {
+        get => gridSizeX * gridSizeY;
     }
 
     void CreateGrid () {
@@ -63,13 +66,23 @@ public class Grid : MonoBehaviour {
 
     void OnDrawGizmos () {
         Gizmos.DrawWireCube (transform.position, new Vector3 (gridWorldSize.x, 1, gridWorldSize.y));
-        if (grid != null) {
-            foreach (Node n in grid) {
-                Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
-                if (path != null && path.Contains (n)) {
+
+        if (onlyDisplayPathGizmos) {
+            if (path != null) {
+                foreach (Node n in path) {
                     Gizmos.color = Color.black;
+                    Gizmos.DrawCube (n.worldPosition, Vector3.one * (nodeDiameter - 0.1f));
                 }
-                Gizmos.DrawCube (n.worldPosition, Vector3.one * (nodeDiameter - 0.1f));
+            }
+        } else {
+            if (grid != null) {
+                foreach (Node n in grid) {
+                    Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
+                    if (path != null && path.Contains (n)) {
+                        Gizmos.color = Color.black;
+                    }
+                    Gizmos.DrawCube (n.worldPosition, Vector3.one * (nodeDiameter - 0.1f));
+                }
             }
         }
     }
