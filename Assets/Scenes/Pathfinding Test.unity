@@ -291,7 +291,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 327795927}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.65, y: 0, z: -0.025}
+  m_LocalPosition: {x: 3.67, y: 0, z: -0.232}
   m_LocalScale: {x: 1.7, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1841948095}
@@ -526,7 +526,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 771140879}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.33, y: 0, z: -1.713}
+  m_LocalPosition: {x: 3.15, y: 0, z: -1.749}
   m_LocalScale: {x: 3.1242187, y: 1, z: 0.4875}
   m_Children: []
   m_Father: {fileID: 1841948095}
@@ -1633,7 +1633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef88aff29f2d8964c954c5f12da68f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayGridGizmos: 0
+  displayGridGizmos: 1
   unwalkableMask:
     serializedVersion: 2
     m_Bits: 512
@@ -1642,12 +1642,13 @@ MonoBehaviour:
   walkableRegions:
   - terrainMask:
       serializedVersion: 2
-      m_Bits: 1024
+      m_Bits: 1536
     terrainPenalty: 0
   - terrainMask:
       serializedVersion: 2
       m_Bits: 2048
     terrainPenalty: 10
+  obstacleProximityPenalty: 10
 --- !u!114 &2123115622
 MonoBehaviour:
   m_ObjectHideFlags: 0
