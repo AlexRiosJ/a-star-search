@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System;
 using UnityEngine;
 
 public class Pathfinding : MonoBehaviour {
@@ -63,7 +63,7 @@ public class Pathfinding : MonoBehaviour {
                         continue;
                     }
 
-                    int newMovementCostToNeighbor = currentNode.gCost + GetDistance (currentNode, neighbor);
+                    int newMovementCostToNeighbor = currentNode.gCost + GetDistance (currentNode, neighbor) + neighbor.movementPenalty;
                     if (newMovementCostToNeighbor < neighbor.gCost || !openSet.Contains (neighbor)) {
                         neighbor.gCost = newMovementCostToNeighbor;
                         neighbor.hCost = GetDistance (neighbor, targetNode);
@@ -71,6 +71,8 @@ public class Pathfinding : MonoBehaviour {
 
                         if (!openSet.Contains (neighbor)) {
                             openSet.Add (neighbor);
+                        } else {
+                            openSet.UpdateItem (neighbor);
                         }
                     }
                 }
@@ -91,7 +93,7 @@ public class Pathfinding : MonoBehaviour {
             currentNode = currentNode.parent;
         }
         Vector3[] waypoints = SimplifyPath (path);
-        Array.Reverse(waypoints);
+        Array.Reverse (waypoints);
         return waypoints;
     }
 
