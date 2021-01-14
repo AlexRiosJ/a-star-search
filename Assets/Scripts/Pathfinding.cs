@@ -7,26 +7,20 @@ using UnityEngine;
 public class Pathfinding : MonoBehaviour {
 
     Grid grid;
-    PathRequestManager requestManager;
 
     void Awake () {
         grid = GetComponent<Grid> ();
-        requestManager = GetComponent<PathRequestManager> ();
     }
 
-    public void StartFindPath (Vector3 startPosition, Vector3 targetPosition) {
-        StartCoroutine (FindPath (startPosition, targetPosition));
-    }
-
-    IEnumerator FindPath (Vector3 startPosition, Vector3 targetPosition) {
+    public void FindPath (PathRequest request, Action<PathResult> callback) {
         Stopwatch sw = new Stopwatch ();
         sw.Start ();
 
         Vector3[] waypoints = new Vector3[0];
         bool pathSuccess = false;
 
-        Node startNode = grid.NodeFromWorldPoint (startPosition);
-        Node targetNode = grid.NodeFromWorldPoint (targetPosition);
+        Node startNode = grid.NodeFromWorldPoint (request.pathStart);
+        Node targetNode = grid.NodeFromWorldPoint (request.pathEnd);
 
         if (startNode.isWalkable && targetNode.isWalkable) {
 
@@ -78,11 +72,13 @@ public class Pathfinding : MonoBehaviour {
                 }
             }
         }
-        yield return null;
+
         if (pathSuccess) {
             waypoints = RetracePath (startNode, targetNode);
+            pathSuccess = waypoints.Length > 0;
         }
-        requestManager.FinishedProcessingPath (waypoints, pathSuccess);
+
+        callback (new PathResult (waypoints, pathSuccess, request.callback));
     }
 
     Vector3[] RetracePath (Node startNode, Node endNode) {
